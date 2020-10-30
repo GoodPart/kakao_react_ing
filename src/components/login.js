@@ -1,24 +1,22 @@
 import React, { Component, setState } from 'react';
-import KakaoLogin from 'react-kakao-login';
+// import KakaoLogin from 'react-kakao-login';
 import Kakao from 'kakaojs'
-import './App.css';
-import axios from 'axios'
-import { BrowserRouter as Router, Route, Switch, Link, Redirect } from 'react-router-dom';
-import Main from './components/main'
-import Login from './components/login'
+// import './App.css';
+// import axios from 'axios'
+// import { BrowserRouter as Router, Route, Switch, Link, Redirect } from 'react-router-dom';
 
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state= {
-      id: '',
-      name : '',
-      profileImg : ''
-    }
-  };
+function login({history}) {
+//   constructor(props) {
+//     super(props);
+//     this.state= {
+//       id: '',
+//       name : '',
+//       profileImg : ''
+//     }
+//   };
 
-  bringProfile = () => {
+const bringProfile = () => {
     Kakao.API.request({
       url: '/v2/user/me',
       success: function(response) {
@@ -36,7 +34,7 @@ class App extends Component {
   }
 
   //나에게 메세지 보내기
-  toMSGForMe = () => {
+  const toMSGForMe = () => {
     Kakao.Link.createDefaultButton({
       container: '#CONTAINER_ID',
       objectType: 'feed',
@@ -72,7 +70,7 @@ class App extends Component {
     });
   }
 
-  kakaoAuth = ()=> {
+  const kakaoAuth = ()=> {
     Kakao.Auth.authorize({
       redirectUri: 'http://localhost:3000/oauth',
       throughTalk: true
@@ -82,12 +80,12 @@ class App extends Component {
   }
   
 
-  logOut =() => {
+  const logOut =() => {
     Kakao.Auth.logout(function(res) {
       console.log("logout", res)
     })
   }
-  navi=()=> {
+  const navi=()=> {
     Kakao.Navi.start({
       name: "현대백화점 판교점",
       x: 127.11205203011632,
@@ -95,7 +93,7 @@ class App extends Component {
       coordType: 'wgs84'
   });
   }
-  logOutExfire = () => {
+  const logOutExfire = () => {
     Kakao.API.request({
       url: '/v1/user/unlink',
       success: function(response) {
@@ -107,7 +105,7 @@ class App extends Component {
     });
   }
 
-  loginAuth = () => {
+  const loginAuth = () => {
     Kakao.Auth.authorize({
       redirectUri: 'http://localhost:3000/oauth',
       //한번 정보동의 및 회원가입하면 다음부터 별도의 동의없이 간편 로그인 기능임
@@ -116,11 +114,12 @@ class App extends Component {
     });
   }
 
-  logIn =() => {
+  const logIn =() => {
     //카카오 로그인 시작
     Kakao.Auth.login({
       success: function(res) {
         alert('로그인 성공' )
+        
         // console.log("res", res)
 
         Kakao.API.request({
@@ -133,6 +132,10 @@ class App extends Component {
                 password : '',
                 account_type : 2,
             }
+
+            
+
+
 
 
           
@@ -172,99 +175,54 @@ class App extends Component {
         return false;
   
       }
+      
   
     });
+    return console.log("good")
   }
 
 
-  failKakao = err => {
+  const failKakao = err => {
     console.error(err)
   }
   
-  
 
-
-  render() {
     return(
       <>
-
-<Router>
-      <div>
-        <ul>
-
-          <li>
-            {/* <Link to="/">로그인</Link> */}
-            <Link to="/main">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-
-        {/* <h1 onClick={this.logIn}>
+        <h1 onClick={logIn}>
           로그인
         </h1>
 
-        <h2 onClick={this.bringProfile}>
+        <h2 onClick={bringProfile}>
           정보가져오기
         </h2>
 
-        <h2 onClick={this.toMSGForMe}>
+        <h2 onClick={toMSGForMe}>
           메세지 전송
         </h2>
 
-        <h1 onClick={this.navi}>
+        {/* <h1 onClick={this.navi}>
           <img
             src="https://developers.kakao.com/assets/img/about/buttons/navi/kakaonavi_btn_medium.png"
           />
-          
-        </h1>
+         
+        </h1> */}
         
-        <h1 onClick={this.logOut}>
+        <h1 onClick={logOut}>
           로그아웃
         </h1>
-        <h1 onClick={this.logOutExfire}>
+        <h1 onClick={logOutExfire}>
           연결 해제
-        </h1> */}
-          
-          
-        </ul>
-
-        <hr />
-
-        {/*
-          A <Switch> looks through all its children <Route>
-          elements and renders the first one whose path
-          matches the current URL. Use a <Switch> any time
-          you have multiple routes, but you want only one
-          of them to render at a time
-        */}
-        <Switch>
-          <Route exact path="/main">
-            <Main />
-          </Route>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          
-        </Switch>
-      </div>
-    </Router>
-        {/* <KakaoLogin
-        // jsKey ="fa6268b3473d1204cc1d4768c22761e3"
-        buttonText = "Kakao"
-        onSuccess={this.responseKakao}
-        onFailure={this.failKakao}
-        getProfile="true"
-        /> */}
+        </h1>
 
         
       </>
     )
-  }
+  
   
   
 }
 
 
 
-export default App;
+export default login;
